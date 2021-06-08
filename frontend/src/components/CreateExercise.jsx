@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const CreateExercise = () => {
   const [username, setUsername] = useState("");
@@ -6,6 +8,8 @@ const CreateExercise = () => {
   const [duration, setDuration] = useState(0);
   const [date, setDate] = useState(new Date());
   const [users, setUsers] = useState([]);
+
+	const userRef = useRef('userInput');
 
   // const [exercise, setExercise] = useState({
   //   username: "",
@@ -15,7 +19,7 @@ const CreateExercise = () => {
   // });
 
   useEffect(() => {
-    setUsers([...users, "test user"]);
+    setUsers(["test user"]);
     setUsername("test user");
   }, []);
 
@@ -53,10 +57,10 @@ const CreateExercise = () => {
     <div>
       <h3>Create New Exercise Log</h3>
       <form onSubmit={onSubmit}>
-        <div className="form-group">
+        <div className="form-group pb-4">
           <label>Username: </label>
           <select
-            ref="userInput"
+            ref={userRef}
             required
             className="form-control"
             value={username}
@@ -71,7 +75,17 @@ const CreateExercise = () => {
             })}
           </select>
         </div>
-        <div className="form-group">
+        <div className="form-group pb-4">
+          <label>Description: </label>
+          <input
+            type="text"
+            required
+            className="form-control"
+            value={description}
+            onChange={onChangeDescription}
+          />
+        </div>
+        <div className="form-group pb-4">
           <label>Duration (in minutes): </label>
           <input
             type="text"
@@ -80,13 +94,13 @@ const CreateExercise = () => {
             onChange={onChangeDuration}
           />
         </div>
-        <div className="form-group">
+        <div className="form-group pb-4">
           <label>Date: </label>
           <div>
             <DatePicker selected={date} onChange={onChangeDate} />
           </div>
         </div>
-        <div className="form-group">
+        <div className="form-group pb-4">
           <input
             type="submit"
             value="Create Exercise Log"
