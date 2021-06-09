@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from 'axios';
 
 const CreateExercise = () => {
   const [username, setUsername] = useState("");
@@ -19,8 +20,14 @@ const CreateExercise = () => {
   // });
 
   useEffect(() => {
-    setUsers(["test user"]);
-    setUsername("test user");
+    const url = 'http://localhost:5000/users/';
+    axios.get(url)
+      .then(res => {
+        if (res.data.length) {
+          setUsers(res.data.map(user => user.username))
+          setUsername(res.data[0].username)
+        }
+      })
   }, []);
 
   const onChangeUsername = (e) => {
@@ -41,6 +48,7 @@ const CreateExercise = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    const url = "http://localhost:5000/exercises/add";
 
     const exercise = {
       username,
@@ -48,6 +56,9 @@ const CreateExercise = () => {
       duration,
       date,
     };
+
+    axios.post(url, exercise)
+      .then(res => console.log(res.data));
 
     console.log(exercise);
     window.location = "/";
